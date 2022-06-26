@@ -32,8 +32,8 @@ class Client:
             url += "&" + key + "=" + value
             
         req = requests.get(url=url)
-
         
+       
         return Response(status_code= req.status_code, body= req.json())
         
     def post(self,url = "",slash_elements = [], body:dict = {}):

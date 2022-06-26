@@ -1,13 +1,14 @@
 import requests
 from ClientHelper import Client, Response
-
+from Instagram_utils_ import all_fields_url, all_fields_value,User_fields
 class Instagram:
     client = Client()
 
-    def __init__(self,client_id, client_secret,redirect_uri) -> None:
+    def __init__(self,client_id, client_secret,redirect_uri,v) -> None:
         self.client_id =client_id
         self.client_secret =client_secret
         self.redirect_uri = redirect_uri
+        self.v = v
         
 
     def get_short_lived_token(self,code: str):
@@ -40,3 +41,15 @@ class Instagram:
 
         return resp
 
+    def get_basic_info(self,id,token):
+        params = {"fields":all_fields_url(User_fields),
+        "access_token":token}
+        
+        resp = self.client.get("https://graph.instagram.com",[self.v,id],params= params)
+
+        return resp.body
+    
+    def get_user_media(self,id,token):
+        params = {"access_token":token}
+        resp = self.client.get("https://graph.instagram.com/",[self.v,id,"media"],params)
+        return resp.body
